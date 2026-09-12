@@ -1,7 +1,8 @@
 baseURL = 'https://blog.sivamadhavan.com/'
 languageCode = 'en-us'
-title = 'My Hugo Blog'
+title = 'Siva Madhavan'
 theme = 'PaperMod'
+copyright = '© 2026 Siva Madhavan'
 
 enableRobotsTXT = true
 buildDrafts = false

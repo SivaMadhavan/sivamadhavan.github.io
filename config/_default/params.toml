@@ -1,7 +1,7 @@
 env = "production"
-title = "My Hugo Blog"
-description = "A fast, minimalist blog built with Hugo and PaperMod"
-author = "Siva"
+title = "Siva Madhavan"
+description = "Backend Engineer specializing in healthcare SaaS platforms, distributed architectures, and AI integrations."
+author = "Siva Madhavan"
 defaultTheme = "auto"
 disableThemeToggle = false
 ShowReadingTime = true
@@ -12,17 +12,23 @@ ShowCodeCopyButtons = true
 ShowToc = true
 TocOpen = false
 
+[assets]
+  favicon = "/favicon.svg"
+  favicon16x16 = "/favicon.svg"
+  favicon32x32 = "/favicon.svg"
+  apple_touch_icon = "/favicon.svg"
+
 [homeInfoParams]
-  Title = "Welcome to My Blog 👋"
-  Content = "Sharing insights, tutorials, and notes on software engineering, technology, and building modern applications."
+  Title = "Siva Madhavan"
+  Content = "Backend Engineer specializing in healthcare SaaS platforms, real-time audio pipelines, and AI integrations. Writing about distributed systems, transformer models, and backend architecture."
 
 [[socialIcons]]
   name = "github"
   url = "https://github.com/SivaMadhavan"
 
 [[socialIcons]]
-  name = "twitter"
-  url = "https://x.com"
+  name = "email"
+  url = "mailto:sivamadhavan619@gmail.com"
 
 [[socialIcons]]
   name = "linkedin"
@@ -36,4 +42,3 @@ TocOpen = false
   threshold = 0.4
   minMatchCharLength = 0
   keys = ["title", "permalink", "summary", "content"]
-
