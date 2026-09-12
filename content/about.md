@@ -15,5 +15,8 @@ Welcome to my personal blog. I write about software engineering, web technologie
 
 Feel free to connect or check out my work:
 - **GitHub**: [github.com](https://github.com)
+- **Interactive Profile**: [View Terminal Resume / Profile](/profile/)
+- **GitHub**: [github.com/SivaMadhavan](https://github.com/SivaMadhavan)
+- **Email**: [sivamadhavan619@gmail.com](mailto:sivamadhavan619@gmail.com)
 - **Twitter / X**: [x.com](https://x.com)
 - **LinkedIn**: [linkedin.com](https://linkedin.com)

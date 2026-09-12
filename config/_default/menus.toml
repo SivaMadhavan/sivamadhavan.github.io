@@ -1,0 +1,36 @@
+[[main]]
+  identifier = "posts"
+  name = "Posts"
+  url = "/posts/"
+  weight = 10
+
+[[main]]
+  identifier = "archives"
+  name = "Archive"
+  url = "/archives/"
+  weight = 20
+
+[[main]]
+  identifier = "tags"
+  name = "Tags"
+  url = "/tags/"
+  weight = 30
+
+[[main]]
+  identifier = "search"
+  name = "Search"
+  url = "/search/"
+  weight = 40
+
+[[main]]
+  identifier = "profile"
+  name = "Profile"
+  url = "/profile/"
+  weight = 45
+
+[[main]]
+  identifier = "about"
+  name = "About"
+  url = "/about/"
+  weight = 50
+

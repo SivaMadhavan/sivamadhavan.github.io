@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>siva@resume:~$</title>
+<meta name="description" content="Siva Madhavan — Backend Engineer specializing in healthcare SaaS platforms, AI integrations, and data pipelines.">
+<meta property="og:title" content="Siva Madhavan — Backend Engineer">
+<meta property="og:description" content="Backend Engineer building scalable healthcare SaaS platforms, AI integrations, and data pipelines.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><rect width=%22100%22 height=%22100%22 fill=%22%230B0F0D%22/><text x=%2250%22 y=%2270%22 font-size=%2264%22 text-anchor=%22middle%22 fill=%22%2347F5B4%22 font-family=%22monospace%22>_</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0A0D0C;
+  --panel:#0F1512;
+  --panel2:#121A16;
+  --ink:#D9E6DE;
+  --ink-soft:#8FA69A;
+  --ink-faint:#5A6E64;
+  --accent:#47F5B4;
+  --accent-dim:#1F4A3A;
+  --accent-glow:rgba(71,245,180,0.35);
+  --amber:#F5C04A;
+  --line:#20302A;
+  --font-mono:'IBM Plex Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--font-mono);
+  background:var(--bg);
+  color:var(--ink);
+  line-height:1.65;
+  padding:2.5rem 1rem 6rem;
+  position:relative;
+}
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:
+    repeating-linear-gradient(0deg, rgba(255,255,255,0.018) 0px, rgba(255,255,255,0.018) 1px, transparent 1px, transparent 3px),
+    radial-gradient(ellipse at 50% -10%, rgba(71,245,180,0.06), transparent 60%);
+  z-index:0;
+}
+a{color:var(--accent);text-decoration:none;}
+a:hover{text-decoration:underline;}
+a:focus-visible,button:focus-visible{outline:1px solid var(--accent);outline-offset:3px;}
+
+.wrap{max-width:820px;margin:0 auto;position:relative;z-index:1;}
+
+/* Terminal window chrome */
+.term{
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:8px;
+  overflow:hidden;
+  box-shadow:0 0 0 1px rgba(0,0,0,0.4), 0 20px 60px -20px rgba(0,0,0,0.6);
+}
+.term-bar{
+  display:flex;
+  align-items:center;
+  gap:0.5rem;
+  padding:0.65rem 0.9rem;
+  background:var(--panel2);
+  border-bottom:1px solid var(--line);
+}
+.dot{width:10px;height:10px;border-radius:50%;background:#3A423E;}
+.term-title{
+  margin-left:0.75rem;
+  font-size:0.72rem;
+  color:var(--ink-faint);
+  letter-spacing:0.02em;
+}
+.term-body{padding:2rem 1.75rem;}
+
+/* Header */
+.prompt-line{
+  font-size:0.78rem;
+  color:var(--ink-faint);
+  margin-bottom:0.4rem;
+}
+.prompt-line .path{color:var(--accent);}
+h1{
+  font-size:2rem;
+  font-weight:700;
+  color:var(--ink);
+  letter-spacing:-0.01em;
+  display:flex;
+  align-items:center;
+  gap:0.15rem;
+}
+.cursor{
+  display:inline-block;
+  width:0.5em;
+  height:1.5rem;
+  background:var(--accent);
+  margin-left:0.3rem;
+  animation:blink 1s step-end infinite;
+  box-shadow:0 0 10px var(--accent-glow);
+}
+@keyframes blink{50%{opacity:0;}}
+@media (prefers-reduced-motion:reduce){.cursor{animation:none;}}
+
+.role-line{
+  font-size:0.9rem;
+  color:var(--accent);
+  margin-top:0.5rem;
+}
+.role-line::before{content:"// ";color:var(--ink-faint);}
+
+.contact-row{
+  font-size:0.78rem;
+  color:var(--ink-soft);
+  margin-top:1.1rem;
+  display:flex;
+  flex-wrap:wrap;
+  gap:0.4rem 0;
+}
+.contact-row .sep{margin:0 0.5rem;color:var(--ink-faint);}
+
+.actions{display:flex;gap:0.6rem;margin-top:1.4rem;}
+.btn{
+  font-family:var(--font-mono);
+  background:transparent;
+  color:var(--accent);
+  border:1px solid var(--accent-dim);
+  padding:0.5rem 0.9rem;
+  border-radius:6px;
+  font-size:0.76rem;
+  cursor:pointer;
+}
+.btn:hover{background:var(--accent-dim);box-shadow:0 0 16px var(--accent-glow);}
+
+/* Section blocks */
+section{margin-top:2.6rem;}
+.cmd{
+  font-size:0.78rem;
+  color:var(--ink-faint);
+  margin-bottom:1rem;
+  padding-bottom:0.6rem;
+  border-bottom:1px solid var(--line);
+}
+.cmd .p{color:var(--accent);}
+.cmd .arg{color:var(--amber);}
+
+.summary{font-size:0.92rem;color:var(--ink-soft);max-width:70ch;}
+
+/* Skills */
+.skills-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+  gap:1.1rem;
+}
+.skill-cat{
+  font-size:0.68rem;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+  color:var(--ink-faint);
+  margin-bottom:0.5rem;
+}
+.skill-cat::before{content:"> ";color:var(--accent);}
+.chip-row{display:flex;flex-wrap:wrap;gap:0.4rem;}
+.chip{
+  font-size:0.76rem;
+  background:var(--panel2);
+  border:1px solid var(--line);
+  color:var(--ink-soft);
+  padding:0.22rem 0.5rem;
+  border-radius:4px;
+}
+
+/* Timeline */
+.timeline{position:relative;padding-left:1.5rem;}
+.timeline::before{
+  content:"";
+  position:absolute;
+  left:4px;top:6px;bottom:6px;
+  width:1px;
+  background:var(--line);
+}
+.entry{position:relative;margin-bottom:2.1rem;}
+.entry:last-child{margin-bottom:0;}
+.entry::before{
+  content:"";
+  position:absolute;
+  left:-1.5rem;top:0.3rem;
+  width:8px;height:8px;
+  border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 8px var(--accent-glow);
+}
+.entry-head{
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:0.3rem 1rem;
+  font-weight:600;color:var(--ink);font-size:0.92rem;
+}
+.entry-dates{font-size:0.72rem;color:var(--ink-faint);white-space:nowrap;}
+.entry-org{font-size:0.76rem;color:var(--accent);margin:0.25rem 0 0.6rem;}
+.entry-org::before{content:"@ ";color:var(--ink-faint);}
+.entry ul{padding-left:1.1rem;font-size:0.86rem;color:var(--ink-soft);}
+.entry li{margin-bottom:0.4rem;}
+.entry li::marker{color:var(--accent);}
+
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:2.2rem;}
+@media (max-width:640px){
+  .grid-2{grid-template-columns:1fr;}
+  h1{font-size:1.5rem;}
+  .term-body{padding:1.4rem 1.1rem;}
+}
+
+.edu-item{margin-bottom:0.9rem;}
+.edu-head{display:flex;justify-content:space-between;font-weight:600;font-size:0.88rem;flex-wrap:wrap;gap:0.3rem;}
+.edu-sub{font-size:0.74rem;color:var(--ink-faint);margin-top:0.15rem;}
+.awards{list-style:none;font-size:0.84rem;color:var(--ink-soft);margin-top:0.5rem;}
+.awards li{padding-left:1rem;position:relative;margin-bottom:0.4rem;}
+.awards li::before{content:"$";position:absolute;left:0;color:var(--accent);}
+
+.footer-line{
+  margin-top:2.8rem;
+  padding-top:1.2rem;
+  border-top:1px solid var(--line);
+  font-size:0.72rem;
+  color:var(--ink-faint);
+}
+.footer-line .ok{color:var(--accent);}
+
+.reveal{opacity:0;transform:translateY(8px);transition:opacity .45s ease,transform .45s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+@media (prefers-reduced-motion:reduce){
+  .reveal{opacity:1;transform:none;transition:none;}
+  html{scroll-behavior:auto;}
+}
+
+@media print{
+  body::before{display:none;}
+  body{background:white;color:black;padding:0;}
+  .term{border:none;box-shadow:none;}
+  .term-bar,.no-print,.cursor{display:none !important;}
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="term">
+    <div class="term-bar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="term-title">siva@resume:~$</span>
+    </div>
+
+    <div class="term-body">
+
+      <header>
+        <div class="prompt-line"><span class="path">~</span> whoami</div>
+        <h1>Siva Madhavan<span class="cursor" aria-hidden="true"></span></h1>
+        <div class="role-line">Backend Engineer | AI &amp; Real-Time Systems</div>
+        <div class="contact-row">
+          <span>Chennai, India</span>
+          <span class="sep">|</span>
+          <a href="mailto:sivamadhavan619@gmail.com">sivamadhavan619@gmail.com</a>
+          <span class="sep">|</span>
+          <span>+91 6374698287</span>
+          <span class="sep">|</span>
+          <a href="https://github.com/SivaMadhavan" target="_blank" rel="noopener">github.com/SivaMadhavan</a>
+        </div>
+        <div class="actions no-print">
+          <button class="btn" onclick="window.print()">./export --pdf</button>
+          <a class="btn" href="../">cd ~/blog</a>
+        </div>
+      </header>
+
+      <section class="reveal">
+        <div class="cmd"><span class="p">$</span> cat <span class="arg">summary.txt</span></div>
+        <p class="summary">Backend Engineer with 5+ years of experience building healthcare SaaS platforms, scalable APIs, real-time systems, and AI-powered applications. Strong experience with Python, Django, Django REST Framework, SQL, WebSockets, Azure Speech Services, and Azure OpenAI. Experienced in API and database optimization, third-party healthcare integrations, real-time audio processing, and AI-driven clinical workflows.</p>
+      </section>
+
+      <section class="reveal">
+        <div class="cmd"><span class="p">$</span> cat <span class="arg">stack.json</span></div>
+        <div class="skills-grid">
+          <div>
+            <div class="skill-cat">languages</div>
+            <div class="chip-row"><span class="chip">Python</span><span class="chip">SQL</span><span class="chip">C</span><span class="chip">C++</span></div>
+          </div>
+          <div>
+            <div class="skill-cat">frameworks &amp; backend</div>
+            <div class="chip-row"><span class="chip">Django</span><span class="chip">Django REST Framework</span><span class="chip">FastAPI</span><span class="chip">Celery</span><span class="chip">Redis</span><span class="chip">WebSockets</span></div>
+          </div>
+          <div>
+            <div class="skill-cat">cloud, devops &amp; ai</div>
+            <div class="chip-row"><span class="chip">AWS EC2</span><span class="chip">S3</span><span class="chip">CloudWatch</span><span class="chip">CI/CD (Jenkins)</span><span class="chip">Azure OpenAI</span><span class="chip">Azure Speech Services</span></div>
+          </div>
+          <div>
+            <div class="skill-cat">databases &amp; analytics</div>
+            <div class="chip-row"><span class="chip">MySQL</span><span class="chip">MariaDB</span><span class="chip">Power BI</span></div>
+          </div>
+          <div>
+            <div class="skill-cat">developer tools</div>
+            <div class="chip-row"><span class="chip">Git</span><span class="chip">Postman</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="reveal">
+        <div class="cmd"><span class="p">$</span> tail -f <span class="arg">experience.log</span></div>
+        <div class="timeline">
+
+          <div class="entry">
+            <div class="entry-head"><span>Backend Engineer — AI &amp; Platform</span><span class="entry-dates">Jul 2021 → present</span></div>
+            <div class="entry-org">HealthViewX · Payoda Technologies</div>
+            <ul>
+              <li>Developed and maintained scalable Python/Django backend services and REST APIs for a healthcare SaaS platform serving US providers and patients.</li>
+              <li>Led development of a pain management module used by thousands of users, improving treatment tracking by 30%.</li>
+              <li>Improved API and database performance by 50% through SQL query optimization, database indexing, and Django ORM improvements.</li>
+              <li>Integrated healthcare and communication platforms including Twilio, RingCentral, eFax, and Availity, improving operational efficiency by 40%.</li>
+              <li>Integrated wearable and medical-device platforms including Fitbit and iHealth, improving provider productivity by 25%.</li>
+            </ul>
+          </div>
+
+          <div class="entry">
+            <div class="entry-head"><span>Data Engineer &amp; Analyst</span><span class="entry-dates">May 2024 → present</span></div>
+            <div class="entry-org">HealthViewX · Payoda Technologies</div>
+            <ul>
+              <li>Built Python and SQL ETL pipelines to process and transform multi-source healthcare data.</li>
+              <li>Developed Power BI dashboards and reports to visualize KPIs and business metrics for stakeholders.</li>
+              <li>Integrated Power BI Embedded into web applications to deliver analytics within the application workflow.</li>
+            </ul>
+          </div>
+
+          <div class="entry">
+            <div class="entry-head"><span>Software Engineer Intern</span><span class="entry-dates">Jan 2021 → Jun 2021</span></div>
+            <div class="entry-org">Payoda Technologies</div>
+            <ul>
+              <li>Developed internal tools and contributed to backend services using Django and MySQL.</li>
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="reveal">
+        <div class="cmd"><span class="p">$</span> ls <span class="arg">./projects</span></div>
+        <div class="timeline">
+
+          <div class="entry">
+            <div class="entry-head"><span>A3 – Ambient AI Chrome Extension</span></div>
+            <ul>
+              <li>Architected and published a Chrome extension that captures real-time patient–provider conversations, streams audio to Azure Speech Services for transcription, and uses Azure OpenAI to generate structured clinical summaries in configurable formats.</li>
+              <li>Developed WebSocket-based bidirectional audio streaming and real-time session management for low-latency transcription.</li>
+              <li>Engineered the system to support multiple concurrent transcription sessions, optimizing streaming, resource utilization, and processing latency under constrained infrastructure.</li>
+            </ul>
+          </div>
+
+          <div class="entry">
+            <div class="entry-head"><span>Enterprise Reporting Engine</span></div>
+            <ul>
+              <li>Designed an asynchronous document export service using Django, Celery, and Redis to generate large-scale PDF, CSV, and Excel reports.</li>
+            </ul>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="reveal">
+        <div class="cmd"><span class="p">$</span> cat <span class="arg">education.txt</span></div>
+        <div class="edu-item">
+          <div class="edu-head"><span>B.E. Electronics &amp; Communication Engineering</span><span>CGPA: 7.48</span></div>
+          <div class="edu-sub">PSG College of Technology, Coimbatore, TN, India</div>
+        </div>
+      </section>
+
+      <div class="footer-line">
+        <span class="ok">[ok]</span> process exited 0 · last updated 2026
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  var els = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+      });
+    }, {threshold:0.1});
+    els.forEach(function(el){ io.observe(el); });
+  } else {
+    els.forEach(function(el){ el.classList.add('visible'); });
+  }
+</script>
+
+</body>
+</html>
+

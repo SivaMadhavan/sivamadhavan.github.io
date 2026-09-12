@@ -1,0 +1,15 @@
+[goldmark]
+  [goldmark.renderer]
+    unsafe = true
+
+[highlight]
+  noClasses = false
+  lineNos = true
+  lineNumbersInTable = true
+  style = "monokai"
+
+[tableOfContents]
+  startLevel = 2
+  endLevel = 4
+  ordered = false
+

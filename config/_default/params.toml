@@ -1,0 +1,39 @@
+env = "production"
+title = "My Hugo Blog"
+description = "A fast, minimalist blog built with Hugo and PaperMod"
+author = "Siva"
+defaultTheme = "auto"
+disableThemeToggle = false
+ShowReadingTime = true
+ShowShareButtons = true
+ShowPostNavLinks = true
+ShowBreadCrumbs = true
+ShowCodeCopyButtons = true
+ShowToc = true
+TocOpen = false
+
+[homeInfoParams]
+  Title = "Welcome to My Blog 👋"
+  Content = "Sharing insights, tutorials, and notes on software engineering, technology, and building modern applications."
+
+[[socialIcons]]
+  name = "github"
+  url = "https://github.com/SivaMadhavan"
+
+[[socialIcons]]
+  name = "twitter"
+  url = "https://x.com"
+
+[[socialIcons]]
+  name = "linkedin"
+  url = "https://linkedin.com"
+
+[fuseOpts]
+  isCaseSensitive = false
+  shouldSort = true
+  location = 0
+  distance = 1000
+  threshold = 0.4
+  minMatchCharLength = 0
+  keys = ["title", "permalink", "summary", "content"]
+

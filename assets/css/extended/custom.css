@@ -1,0 +1,18 @@
+/* ==========================================================================
+   Custom CSS Extensions for PaperMod
+   Files in assets/css/extended/ are automatically bundled and minified
+   by Hugo Pipes alongside PaperMod's core stylesheet.
+   ========================================================================== */
+
+/* Example: Subtle link accent hover or custom terminal font tweaks */
+:root {
+  --terminal-accent: #47F5B4;
+}
+
+/* Print styling adjustments */
+@media print {
+  .nav, .footer, .header {
+    display: none !important;
+  }
+}
+
