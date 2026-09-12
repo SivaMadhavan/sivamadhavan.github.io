@@ -82,3 +82,4 @@ A Mel Spectrogram turns an acoustic signal into an image where:
 - Pixel intensity = Energy in decibels (dB)
 
 Convolutional layers and Vision Transformers can now process speech using the exact same attention mechanics used in computer vision, enabling models like Whisper to transcribe speech with superhuman noise tolerance.
+

@@ -57,3 +57,4 @@ A blameless engineering culture changes everything:
 The industry often glamorizes 80-hour hackathons and overnight crunch sessions. In reality, the best engineering decisions—sound data models, clean API contracts, thoughtful modular boundaries—require patience, deep focus, and mental clarity.
 
 Take time away from the keyboard. Walk outside. Read books outside of computer science. The best architectural insights often arrive when you give your subconscious mind space to breathe.
+

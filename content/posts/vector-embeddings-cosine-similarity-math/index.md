@@ -67,3 +67,4 @@ In high dimensions, human spatial intuition breaks down. Two fascinating mathema
 2. **Concentration of Measure**: The volume of an $n$-dimensional sphere is overwhelmingly concentrated in a thin outer shell near the surface.
 
 Because high-dimensional space is so sparsely populated, modern embedding models can encode tens of thousands of nuanced semantic concepts (tone, intent, domain-specific terminology) without running out of degrees of freedom.
+
