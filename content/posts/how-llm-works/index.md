@@ -7,7 +7,7 @@ draft = false
 author = "Siva Madhavan"
 description = "A deep, intuitive, and interactive visual breakdown of modern Large Language Models — from tokenization and embeddings to self-attention, logits, and temperature sampling."
 tags = ["AI", "LLM", "Deep Learning", "Transformers", "Machine Learning"]
-categories = ["Tech", "Artificial Intelligence"]
+categories = ["CS"]
 showToc = true
 TocOpen = true
 +++

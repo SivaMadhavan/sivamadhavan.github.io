@@ -231,3 +231,260 @@ body {
     display: none !important;
   }
 }
+
+/* ==========================================================================
+   10. Home Page Category Filtering & Card Badges
+   ========================================================================== */
+
+/* Category Navigation Pill Bar */
+.category-filter-wrapper {
+  margin-top: 0.5rem;
+  margin-bottom: 1.8rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none; /* Firefox */
+}
+
+.category-filter-wrapper::-webkit-scrollbar {
+  display: none; /* Chrome, Safari */
+}
+
+.category-filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 4px 2px;
+  flex-wrap: wrap;
+}
+
+@media (max-width: 640px) {
+  .category-filter-bar {
+    flex-wrap: nowrap;
+    width: max-content;
+    padding-bottom: 6px;
+  }
+}
+
+.cat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.42rem 0.95rem;
+  border-radius: 9999px;
+  border: 1px solid var(--border);
+  background: var(--entry);
+  color: var(--secondary);
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  outline: none;
+  user-select: none;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.cat-pill:hover {
+  background: var(--accent-light);
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.cat-pill.active {
+  background: var(--accent);
+  color: #FFFFFF !important;
+  border-color: var(--accent);
+  box-shadow: 0 4px 14px var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+/* Colored Dots in Filter Pills */
+.cat-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.2s ease;
+}
+
+.cat-dot-all { background: #64748B; }
+.cat-dot-backend { background: #0D9488; }
+.cat-dot-cs { background: #4F46E5; }
+.cat-dot-math { background: #D97706; }
+.cat-dot-science { background: #7C3AED; }
+.cat-dot-life { background: #059669; }
+
+.cat-pill.active .cat-dot {
+  background: #FFFFFF !important;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
+}
+
+/* Category Counts */
+.cat-count {
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 0.1rem 0.45rem;
+  border-radius: 9999px;
+  background: rgba(100, 116, 139, 0.12);
+  color: var(--secondary);
+  transition: all 0.2s ease;
+}
+
+.cat-pill:hover .cat-count {
+  background: rgba(13, 148, 136, 0.15);
+  color: var(--accent);
+}
+
+.cat-pill.active .cat-count {
+  background: rgba(255, 255, 255, 0.25);
+  color: #FFFFFF !important;
+}
+
+/* Category Badges on Cards */
+.entry-categories {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.65rem;
+  position: relative;
+  z-index: 3; /* Render above the .entry-link click overlay */
+}
+
+.cat-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.18s ease;
+  user-select: none;
+}
+
+/* Distinct Category Accents (Light Mode) */
+.cat-badge-backend {
+  background: #F0FDFA;
+  color: #0F766E;
+  border: 1px solid #CCFBF1;
+}
+.cat-badge-backend:hover {
+  background: #CCFBF1;
+  color: #115E59;
+}
+
+.cat-badge-cs {
+  background: #EEF2FF;
+  color: #4338CA;
+  border: 1px solid #E0E7FF;
+}
+.cat-badge-cs:hover {
+  background: #E0E7FF;
+  color: #3730A3;
+}
+
+.cat-badge-math {
+  background: #FEF3C7;
+  color: #B45309;
+  border: 1px solid #FDE68A;
+}
+.cat-badge-math:hover {
+  background: #FDE68A;
+  color: #92400E;
+}
+
+.cat-badge-science {
+  background: #F5F3FF;
+  color: #6D28D9;
+  border: 1px solid #EDE9FE;
+}
+.cat-badge-science:hover {
+  background: #EDE9FE;
+  color: #5B21B6;
+}
+
+.cat-badge-life {
+  background: #ECFDF5;
+  color: #047857;
+  border: 1px solid #D1FAE5;
+}
+.cat-badge-life:hover {
+  background: #D1FAE5;
+  color: #065F46;
+}
+
+/* Dark Mode Overrides for Category Badges */
+:root[data-theme="dark"] .cat-badge-backend {
+  background: rgba(13, 148, 136, 0.16);
+  color: #2DD4BF;
+  border-color: rgba(45, 212, 191, 0.25);
+}
+:root[data-theme="dark"] .cat-badge-cs {
+  background: rgba(99, 102, 241, 0.16);
+  color: #818CF8;
+  border-color: rgba(129, 140, 248, 0.25);
+}
+:root[data-theme="dark"] .cat-badge-math {
+  background: rgba(245, 158, 11, 0.16);
+  color: #FBBF24;
+  border-color: rgba(251, 191, 36, 0.25);
+}
+:root[data-theme="dark"] .cat-badge-science {
+  background: rgba(139, 92, 246, 0.16);
+  color: #A78BFA;
+  border-color: rgba(167, 139, 250, 0.25);
+}
+:root[data-theme="dark"] .cat-badge-life {
+  background: rgba(16, 185, 129, 0.16);
+  color: #34D399;
+  border-color: rgba(52, 211, 153, 0.25);
+}
+
+/* Empty State Card */
+.category-empty-state {
+  background: var(--entry);
+  border: 2px dashed var(--border);
+  border-radius: 12px;
+  padding: 3.5rem 2rem;
+  text-align: center;
+  margin: 1.5rem 0;
+}
+
+.category-empty-state .empty-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.category-empty-state h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.category-empty-state p {
+  font-size: 0.92rem;
+  color: var(--secondary);
+  max-width: 44ch;
+  margin: 0 auto 1.2rem auto;
+}
+
+.btn-reset-filter {
+  background: var(--accent);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 8px;
+  padding: 0.55rem 1.3rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px var(--accent-glow);
+}
+
+.btn-reset-filter:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+}

@@ -1,0 +1,203 @@
+{{- define "main" }}
+
+{{- if (and site.Params.profileMode.enabled .IsHome) }}
+{{- partial "index_profile.html" . }}
+{{- else }}
+
+{{- if and .IsHome site.Params.homeInfoParams }}
+{{- partial "home_info.html" . }}
+{{- end }}
+
+{{- $pages := where site.RegularPages "Type" "in" (site.Params.mainSections | default (slice "posts")) }}
+{{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true" }}
+{{- $pages = $pages.ByDate.Reverse }}
+
+{{- $targetCats := slice "Backend" "CS" "Math" "Science" "Life" }}
+
+<!-- Interactive Category Filter Navigation Bar -->
+<div class="category-filter-wrapper">
+  <div class="category-filter-bar" role="tablist" aria-label="Filter blog posts by category">
+    <button class="cat-pill active" data-category="all" role="tab" aria-selected="true">
+      <span class="cat-dot cat-dot-all"></span>
+      <span class="cat-name">All</span>
+      <span class="cat-count">{{ len $pages }}</span>
+    </button>
+    {{- range $cat := $targetCats }}
+      {{- $catPages := slice }}
+      {{- range $pages }}
+        {{- if in .Params.categories $cat }}
+          {{- $catPages = $catPages | append . }}
+        {{- end }}
+      {{- end }}
+      <button class="cat-pill" data-category="{{ $cat | lower }}" role="tab" aria-selected="false">
+        <span class="cat-dot cat-dot-{{ $cat | lower }}"></span>
+        <span class="cat-name">{{ $cat }}</span>
+        <span class="cat-count">{{ len $catPages }}</span>
+      </button>
+    {{- end }}
+  </div>
+</div>
+
+<!-- Posts Feed with Category Filtering -->
+<div class="posts-feed" id="posts-feed">
+  {{- range $index, $page := $pages }}
+  {{- $catList := slice }}
+  {{- with .Params.categories }}
+    {{- range . }}
+      {{- $catList = $catList | append (. | lower) }}
+    {{- end }}
+  {{- end }}
+  {{- $catAttr := delimit $catList " " }}
+
+  <article class="post-entry" data-categories="{{ $catAttr }}">
+    {{- with .Params.categories }}
+    <div class="entry-categories">
+      {{- range . }}
+      <span class="cat-badge cat-badge-{{ . | lower }}" data-category="{{ . | lower }}">{{ . }}</span>
+      {{- end }}
+    </div>
+    {{- end }}
+    
+    {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
+    {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
+
+    <header class="entry-header">
+      <h2 class="entry-hint-parent">
+        {{- .Title }}
+        {{- if .Draft }}
+        <span class="entry-hint" title="Draft">
+          <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
+            <path d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+          </svg>
+        </span>
+        {{- end }}
+      </h2>
+    </header>
+
+    {{- if (ne (.Param "hideSummary") true) }}
+    <div class="entry-content">
+      <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
+    </div>
+    {{- end }}
+
+    {{- if not (.Param "hideMeta") }}
+    <footer class="entry-footer">
+      {{- partial "post_meta.html" . -}}
+    </footer>
+    {{- end }}
+    <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+  </article>
+  {{- end }}
+
+  <!-- Dynamic Empty State -->
+  <div class="category-empty-state" id="category-empty-state" style="display: none;">
+    <div class="empty-icon">📂</div>
+    <h3 id="empty-title">No articles found</h3>
+    <p>Articles for this category are in the pipeline. Check back soon or browse all articles.</p>
+    <button type="button" class="btn-reset-filter" id="btn-reset-filter">View All Articles</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  const pills = document.querySelectorAll('.category-filter-bar .cat-pill');
+  const cards = document.querySelectorAll('.posts-feed .post-entry');
+  const emptyState = document.getElementById('category-empty-state');
+  const emptyTitle = document.getElementById('empty-title');
+  const resetBtn = document.getElementById('btn-reset-filter');
+  const validCategories = ['all', 'backend', 'cs', 'math', 'science', 'life'];
+
+  function filterCategory(targetCategory) {
+    targetCategory = (targetCategory || 'all').toLowerCase();
+    if (!validCategories.includes(targetCategory)) {
+      targetCategory = 'all';
+    }
+
+    // Update pill tabs active state
+    pills.forEach(pill => {
+      const cat = pill.getAttribute('data-category');
+      const isActive = cat === targetCategory;
+      pill.classList.toggle('active', isActive);
+      pill.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    });
+
+    let matchCount = 0;
+    cards.forEach(card => {
+      const rawCats = card.getAttribute('data-categories') || '';
+      const cardCats = rawCats.split(/\s+/).filter(Boolean);
+      if (targetCategory === 'all' || cardCats.includes(targetCategory)) {
+        card.style.display = '';
+        matchCount++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+
+    // Handle empty state
+    if (emptyState) {
+      if (matchCount === 0) {
+        emptyState.style.display = 'block';
+        if (emptyTitle) {
+          emptyTitle.textContent = 'No articles in "' + targetCategory.toUpperCase() + '" yet';
+        }
+      } else {
+        emptyState.style.display = 'none';
+      }
+    }
+
+    // Sync hash safely
+    if (targetCategory === 'all') {
+      if (window.location.hash) {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+    } else {
+      history.replaceState(null, '', '#' + targetCategory);
+    }
+  }
+
+  // Pill click listener
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      const cat = pill.getAttribute('data-category');
+      filterCategory(cat);
+    });
+  });
+
+  // Card badge click listener to filter directly
+  document.querySelectorAll('.cat-badge').forEach(badge => {
+    badge.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const cat = badge.getAttribute('data-category');
+      if (cat) {
+        filterCategory(cat);
+        const nav = document.querySelector('.category-filter-wrapper');
+        if (nav) {
+          nav.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+    });
+  });
+
+  // Reset filter button
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => filterCategory('all'));
+  }
+
+  // Initial load from URL hash
+  function checkHash() {
+    const rawHash = window.location.hash.replace(/^#/, '').trim().toLowerCase();
+    if (rawHash && validCategories.includes(rawHash)) {
+      filterCategory(rawHash);
+    }
+  }
+
+  window.addEventListener('hashchange', checkHash);
+  document.addEventListener('DOMContentLoaded', checkHash);
+  // Also run immediately in case DOMContentLoaded already fired
+  checkHash();
+})();
+</script>
+
+{{- end }}
+{{- end }}
