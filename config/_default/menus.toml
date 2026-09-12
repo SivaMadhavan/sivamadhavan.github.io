@@ -1,10 +1,4 @@
 [[main]]
-  identifier = "posts"
-  name = "Posts"
-  url = "/posts/"
-  weight = 10
-
-[[main]]
   identifier = "archives"
   name = "Archive"
   url = "/archives/"

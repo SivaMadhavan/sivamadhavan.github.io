@@ -1,8 +1,10 @@
 +++
 title = "How Large Language Models (LLMs) Actually Work: An Interactive Guide"
 date = '2026-09-12T20:10:00+05:30'
+slug = "how-llm-works"
+aliases = ["/posts/how-llm-works/"]
 draft = false
-author = "Siva"
+author = "Siva Madhavan"
 description = "A deep, intuitive, and interactive visual breakdown of modern Large Language Models — from tokenization and embeddings to self-attention, logits, and temperature sampling."
 tags = ["AI", "LLM", "Deep Learning", "Transformers", "Machine Learning"]
 categories = ["Tech", "Artificial Intelligence"]

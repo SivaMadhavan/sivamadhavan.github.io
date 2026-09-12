@@ -16,3 +16,6 @@ enableEmoji = true
 [outputs]
   home = ['HTML', 'RSS', 'JSON']
 
+[permalinks.page]
+  posts = '/:slug/'
+
