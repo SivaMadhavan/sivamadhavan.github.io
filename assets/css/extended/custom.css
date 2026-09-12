@@ -1,18 +1,233 @@
 /* ==========================================================================
-   Custom CSS Extensions for PaperMod
-   Files in assets/css/extended/ are automatically bundled and minified
-   by Hugo Pipes alongside PaperMod's core stylesheet.
+   Interactive Modern Light Theme & Micro-Interactions for PaperMod
    ========================================================================== */
 
-/* Example: Subtle link accent hover or custom terminal font tweaks */
+/* 1. Base Palette: Interactive Modern Light Theme */
 :root {
-  --terminal-accent: #47F5B4;
+  --radius: 10px;
+  --theme: #F8FAFC;            /* Soft slate-50 canvas (easy on eyes) */
+  --entry: #FFFFFF;            /* Pure white card surface */
+  --primary: #0F172A;          /* Slate-900 primary text */
+  --secondary: #64748B;        /* Slate-500 secondary text */
+  --tertiary: #E2E8F0;         /* Slate-200 subtle borders */
+  --content: #334155;          /* Slate-700 readable body typography */
+  --code-bg: #F1F5F9;          /* Slate-100 inline code highlight */
+  --code-block-bg: #0F172A;    /* Dark slate contrast for code blocks */
+  --border: #E2E8F0;           /* Clean border color */
+  --accent: #0D9488;           /* Interactive emerald/teal */
+  --accent-hover: #0F766E;
+  --accent-light: #F0FDFA;     /* Soft teal tint for pills & highlights */
+  --accent-glow: rgba(13, 148, 136, 0.14);
 }
 
-/* Print styling adjustments */
+/* Dark Mode Fallback when toggled */
+:root[data-theme="dark"] {
+  --theme: #0A0D0C;
+  --entry: #121A16;
+  --primary: #E6F1EC;
+  --secondary: #8FA69A;
+  --tertiary: #20302A;
+  --content: #D9E6DE;
+  --code-bg: #16201C;
+  --code-block-bg: #0F1512;
+  --border: #20302A;
+  --accent: #47F5B4;
+  --accent-hover: #2cd396;
+  --accent-light: rgba(71, 245, 180, 0.1);
+  --accent-glow: rgba(71, 245, 180, 0.25);
+}
+
+/* 2. Typography & Smooth Transitions */
+body {
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  -webkit-font-smoothing: antialiased;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* 3. Hero Header (Home Intro) */
+.first-entry.home-info {
+  background: linear-gradient(135deg, var(--entry) 0%, var(--accent-light) 100%);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2.2rem 2.4rem;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.03);
+  position: relative;
+  overflow: hidden;
+}
+
+.first-entry.home-info::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--accent), #38BDF8);
+}
+
+.first-entry.home-info .entry-header h1 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  color: var(--primary);
+  margin-bottom: 0.5rem;
+}
+
+.first-entry.home-info .entry-content p {
+  color: var(--content);
+  font-size: 1.05rem;
+  line-height: 1.65;
+  max-width: 62ch;
+}
+
+/* 4. Interactive Post Cards */
+.post-entry {
+  background: var(--entry);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.8rem;
+  margin-bottom: 1.2rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03), 0 4px 12px -2px rgba(0, 0, 0, 0.02);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.post-entry:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: 0 12px 28px -4px var(--accent-glow), 0 4px 8px -2px rgba(0, 0, 0, 0.03);
+}
+
+.post-entry .entry-header h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--primary);
+  transition: color 0.2s ease;
+}
+
+.post-entry:hover .entry-header h2 {
+  color: var(--accent);
+}
+
+.post-entry .entry-content {
+  color: var(--secondary);
+  font-size: 0.92rem;
+  line-height: 1.6;
+}
+
+/* 5. Navigation Bar & Menu */
+.header {
+  background: rgba(248, 250, 252, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+}
+
+:root[data-theme="dark"] .header {
+  background: rgba(10, 13, 12, 0.85);
+}
+
+.logo a {
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: var(--primary);
+  transition: color 0.2s ease;
+}
+
+.logo a:hover {
+  color: var(--accent);
+}
+
+#menu a {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--secondary);
+  border-radius: 6px;
+  padding: 0.35rem 0.65rem;
+  transition: all 0.2s ease;
+}
+
+#menu a:hover {
+  background: var(--accent-light);
+  color: var(--accent) !important;
+}
+
+/* 6. Tags & Pill Badges */
+.post-tags a, .terms-tags a {
+  background: var(--accent-light);
+  color: var(--accent);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 0.22rem 0.65rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-decoration: none !important;
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.post-tags a:hover, .terms-tags a:hover {
+  background: var(--accent);
+  color: #FFFFFF !important;
+  border-color: var(--accent);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 10px var(--accent-glow);
+}
+
+/* 7. Social Icons */
+.social-icons a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--entry);
+  color: var(--secondary);
+  margin-right: 0.4rem;
+  transition: all 0.2s ease;
+}
+
+.social-icons a:hover {
+  color: var(--accent) !important;
+  border-color: var(--accent);
+  background: var(--accent-light);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px var(--accent-glow);
+}
+
+/* 8. Modern Code Block Styling */
+.post-content pre {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: 10px;
+}
+
+/* 9. Minimalist Footer */
+.footer {
+  font-size: 0.82rem;
+  color: var(--secondary);
+  border-top: 1px solid var(--border);
+  padding: 1.8rem 0;
+}
+
+.footer a {
+  color: var(--secondary);
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.footer a:hover {
+  color: var(--accent);
+}
+
+/* Print Cleanups */
 @media print {
-  .nav, .footer, .header {
+  .nav, .footer, .header, #theme-toggle {
     display: none !important;
   }
 }
-
