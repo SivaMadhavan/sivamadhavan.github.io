@@ -24,7 +24,7 @@ I am a **Backend Engineer** with 5+ years of experience specializing in scalable
 
 ### Connect with Me
 
-- **Interactive Resume / Profile**: [View Terminal Profile](https://sivamadhavan.com/)
+- **Interactive Resume / Profile**: [View Terminal Profile](/profile/)
 - **GitHub**: [github.com/SivaMadhavan](https://github.com/SivaMadhavan)
 - **Email**: [sivamadhavan619@gmail.com](mailto:sivamadhavan619@gmail.com)
 - **LinkedIn**: [linkedin.com](https://linkedin.com)
