@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+// Cloudflare Worker for sivamadhavan.com
+// Serves interactive terminal resume at the root domain and redirects /posts/ to blog.sivamadhavan.com
+
+const RESUME_HTML = `<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -49,10 +52,7 @@ body::before{
 a{color:var(--accent);text-decoration:none;}
 a:hover{text-decoration:underline;}
 a:focus-visible,button:focus-visible{outline:1px solid var(--accent);outline-offset:3px;}
-
 .wrap{max-width:820px;margin:0 auto;position:relative;z-index:1;}
-
-/* Terminal window chrome */
 .term{
   background:var(--panel);
   border:1px solid var(--line);
@@ -76,8 +76,6 @@ a:focus-visible,button:focus-visible{outline:1px solid var(--accent);outline-off
   letter-spacing:0.02em;
 }
 .term-body{padding:2rem 1.75rem;}
-
-/* Header */
 .prompt-line{
   font-size:0.78rem;
   color:var(--ink-faint);
@@ -104,14 +102,12 @@ h1{
 }
 @keyframes blink{50%{opacity:0;}}
 @media (prefers-reduced-motion:reduce){.cursor{animation:none;}}
-
 .role-line{
   font-size:0.9rem;
   color:var(--accent);
   margin-top:0.5rem;
 }
 .role-line::before{content:"// ";color:var(--ink-faint);}
-
 .contact-row{
   font-size:0.78rem;
   color:var(--ink-soft);
@@ -121,7 +117,6 @@ h1{
   gap:0.4rem 0;
 }
 .contact-row .sep{margin:0 0.5rem;color:var(--ink-faint);}
-
 .actions{display:flex;gap:0.6rem;margin-top:1.4rem;}
 .btn{
   font-family:var(--font-mono);
@@ -132,10 +127,9 @@ h1{
   border-radius:6px;
   font-size:0.76rem;
   cursor:pointer;
+  display:inline-block;
 }
 .btn:hover{background:var(--accent-dim);box-shadow:0 0 16px var(--accent-glow);}
-
-/* Section blocks */
 section{margin-top:2.6rem;}
 .cmd{
   font-size:0.78rem;
@@ -146,10 +140,7 @@ section{margin-top:2.6rem;}
 }
 .cmd .p{color:var(--accent);}
 .cmd .arg{color:var(--amber);}
-
 .summary{font-size:0.92rem;color:var(--ink-soft);max-width:70ch;}
-
-/* Skills */
 .skills-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -172,8 +163,6 @@ section{margin-top:2.6rem;}
   padding:0.22rem 0.5rem;
   border-radius:4px;
 }
-
-/* Timeline */
 .timeline{position:relative;padding-left:1.5rem;}
 .timeline::before{
   content:"";
@@ -203,21 +192,15 @@ section{margin-top:2.6rem;}
 .entry ul{padding-left:1.1rem;font-size:0.86rem;color:var(--ink-soft);}
 .entry li{margin-bottom:0.4rem;}
 .entry li::marker{color:var(--accent);}
-
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:2.2rem;}
 @media (max-width:640px){
   .grid-2{grid-template-columns:1fr;}
   h1{font-size:1.5rem;}
   .term-body{padding:1.4rem 1.1rem;}
 }
-
 .edu-item{margin-bottom:0.9rem;}
 .edu-head{display:flex;justify-content:space-between;font-weight:600;font-size:0.88rem;flex-wrap:wrap;gap:0.3rem;}
 .edu-sub{font-size:0.74rem;color:var(--ink-faint);margin-top:0.15rem;}
-.awards{list-style:none;font-size:0.84rem;color:var(--ink-soft);margin-top:0.5rem;}
-.awards li{padding-left:1rem;position:relative;margin-bottom:0.4rem;}
-.awards li::before{content:"$";position:absolute;left:0;color:var(--accent);}
-
 .footer-line{
   margin-top:2.8rem;
   padding-top:1.2rem;
@@ -226,14 +209,12 @@ section{margin-top:2.6rem;}
   color:var(--ink-faint);
 }
 .footer-line .ok{color:var(--accent);}
-
 .reveal{opacity:0;transform:translateY(8px);transition:opacity .45s ease,transform .45s ease;}
 .reveal.visible{opacity:1;transform:translateY(0);}
 @media (prefers-reduced-motion:reduce){
   .reveal{opacity:1;transform:none;transition:none;}
   html{scroll-behavior:auto;}
 }
-
 @media print{
   body::before{display:none;}
   body{background:white;color:black;padding:0;}
@@ -243,16 +224,13 @@ section{margin-top:2.6rem;}
 </style>
 </head>
 <body>
-
 <div class="wrap">
   <div class="term">
     <div class="term-bar">
       <span class="dot"></span><span class="dot"></span><span class="dot"></span>
       <span class="term-title">siva@resume:~$</span>
     </div>
-
     <div class="term-body">
-
       <header>
         <div class="prompt-line"><span class="path">~</span> whoami</div>
         <h1>Siva Madhavan<span class="cursor" aria-hidden="true"></span></h1>
@@ -271,12 +249,10 @@ section{margin-top:2.6rem;}
           <a class="btn" href="https://blog.sivamadhavan.com/">cd ~/blog</a>
         </div>
       </header>
-
       <section class="reveal">
         <div class="cmd"><span class="p">$</span> cat <span class="arg">summary.txt</span></div>
         <p class="summary">Backend Engineer with 5+ years of experience building healthcare SaaS platforms, scalable APIs, real-time systems, and AI-powered applications. Strong experience with Python, Django, Django REST Framework, SQL, WebSockets, Azure Speech Services, and Azure OpenAI. Experienced in API and database optimization, third-party healthcare integrations, real-time audio processing, and AI-driven clinical workflows.</p>
       </section>
-
       <section class="reveal">
         <div class="cmd"><span class="p">$</span> cat <span class="arg">stack.json</span></div>
         <div class="skills-grid">
@@ -302,11 +278,9 @@ section{margin-top:2.6rem;}
           </div>
         </div>
       </section>
-
       <section class="reveal">
         <div class="cmd"><span class="p">$</span> tail -f <span class="arg">experience.log</span></div>
         <div class="timeline">
-
           <div class="entry">
             <div class="entry-head"><span>Backend Engineer — AI &amp; Platform</span><span class="entry-dates">Jul 2021 → present</span></div>
             <div class="entry-org">HealthViewX · Payoda Technologies</div>
@@ -318,7 +292,6 @@ section{margin-top:2.6rem;}
               <li>Integrated wearable and medical-device platforms including Fitbit and iHealth, improving provider productivity by 25%.</li>
             </ul>
           </div>
-
           <div class="entry">
             <div class="entry-head"><span>Data Engineer &amp; Analyst</span><span class="entry-dates">May 2024 → present</span></div>
             <div class="entry-org">HealthViewX · Payoda Technologies</div>
@@ -328,7 +301,6 @@ section{margin-top:2.6rem;}
               <li>Integrated Power BI Embedded into web applications to deliver analytics within the application workflow.</li>
             </ul>
           </div>
-
           <div class="entry">
             <div class="entry-head"><span>Software Engineer Intern</span><span class="entry-dates">Jan 2021 → Jun 2021</span></div>
             <div class="entry-org">Payoda Technologies</div>
@@ -336,14 +308,11 @@ section{margin-top:2.6rem;}
               <li>Developed internal tools and contributed to backend services using Django and MySQL.</li>
             </ul>
           </div>
-
         </div>
       </section>
-
       <section class="reveal">
         <div class="cmd"><span class="p">$</span> ls <span class="arg">./projects</span></div>
         <div class="timeline">
-
           <div class="entry">
             <div class="entry-head"><span>A3 – Ambient AI Chrome Extension</span></div>
             <ul>
@@ -352,17 +321,14 @@ section{margin-top:2.6rem;}
               <li>Engineered the system to support multiple concurrent transcription sessions, optimizing streaming, resource utilization, and processing latency under constrained infrastructure.</li>
             </ul>
           </div>
-
           <div class="entry">
             <div class="entry-head"><span>Enterprise Reporting Engine</span></div>
             <ul>
               <li>Designed an asynchronous document export service using Django, Celery, and Redis to generate large-scale PDF, CSV, and Excel reports.</li>
             </ul>
           </div>
-
         </div>
       </section>
-
       <section class="reveal">
         <div class="cmd"><span class="p">$</span> cat <span class="arg">education.txt</span></div>
         <div class="edu-item">
@@ -370,15 +336,12 @@ section{margin-top:2.6rem;}
           <div class="edu-sub">PSG College of Technology, Coimbatore, TN, India</div>
         </div>
       </section>
-
       <div class="footer-line">
         <span class="ok">[ok]</span> process exited 0 · last updated 2026
       </div>
-
     </div>
   </div>
 </div>
-
 <script>
   var els = document.querySelectorAll('.reveal');
   if ('IntersectionObserver' in window) {
@@ -392,7 +355,24 @@ section{margin-top:2.6rem;}
     els.forEach(function(el){ el.classList.add('visible'); });
   }
 </script>
-
 </body>
-</html>
+</html>`;
 
+export default {
+  async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+
+    // If requesting root or profile, serve the interactive Terminal Profile HTML
+    if (url.pathname === '/' || url.pathname === '/profile' || url.pathname === '/profile/') {
+      return new Response(RESUME_HTML, {
+        headers: {
+          'content-type': 'text/html; charset=utf-8',
+          'cache-control': 'public, max-age=3600'
+        }
+      });
+    }
+
+    // Redirect all other requests (e.g. /posts/*, /about, /tags) to blog.sivamadhavan.com
+    return Response.redirect(`https://blog.sivamadhavan.com${url.pathname}${url.search}`, 301);
+  }
+};

@@ -25,7 +25,7 @@
 [[main]]
   identifier = "profile"
   name = "Profile"
-  url = "/profile/"
+  url = "https://sivamadhavan.com/"
   weight = 45
 
 [[main]]
