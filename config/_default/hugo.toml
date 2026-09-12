@@ -1,4 +1,4 @@
-baseURL = 'https://sivamadhavan.github.io/'
+baseURL = 'https://sivamadhavan.com/'
 languageCode = 'en-us'
 title = 'My Hugo Blog'
 theme = 'PaperMod'
