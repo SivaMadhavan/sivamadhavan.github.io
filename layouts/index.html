@@ -12,20 +12,9 @@
 {{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true" }}
 {{- $pages = $pages.ByDate.Reverse }}
 
-{{- $targetCats := slice "Backend" "CS" "Math" "Science" "Life" }}
 {{- $latestPost := index $pages 0 }}
 {{- $lastUpdated := $latestPost.Lastmod | default $latestPost.Date }}
 
-<!-- Interactive Category Filter Navigation Bar -->
-<div class="category-filter-wrapper">
-  <div class="category-filter-bar" role="tablist" aria-label="Filter blog posts by category">
-    <button class="cat-pill active" data-category="all" role="tab" aria-selected="true">
-      <span class="cat-dot cat-dot-all"></span>
-      <span class="cat-name">All</span>
-      <span class="cat-count">{{ len $pages }}</span>
-    </button>
-    {{- range $cat := $targetCats }}
-      {{- $catPages := slice }}
 {{- $targetCats := slice 
   (dict "key" "all" "name" "All Posts" "icon" "📚" "desc" "Complete archive of technical deep-dives, systems, and essays." "badgeClass" "all")
   (dict "key" "backend" "name" "Backend" "icon" "⚙️" "desc" "Distributed systems, resilient webhooks, FastAPI & Redis architecture." "badgeClass" "backend")
@@ -58,7 +47,6 @@
       {{- $catPages = $pages }}
     {{- else }}
       {{- range $pages }}
-        {{- if in .Params.categories $cat }}
         {{- $postCats := slice }}
         {{- with .Params.categories }}
           {{- range . }}
@@ -69,11 +57,6 @@
           {{- $catPages = $catPages | append . }}
         {{- end }}
       {{- end }}
-      <button class="cat-pill" data-category="{{ $cat | lower }}" role="tab" aria-selected="false">
-        <span class="cat-dot cat-dot-{{ $cat | lower }}"></span>
-        <span class="cat-name">{{ $cat }}</span>
-        <span class="cat-count">{{ len $catPages }}</span>
-      </button>
     {{- end }}
     {{- $count := len $catPages }}
 
@@ -174,7 +157,6 @@
   <div class="category-empty-state" id="category-empty-state" style="display: none;">
     <div class="empty-icon">📂</div>
     <h3 id="empty-title">No articles found</h3>
-    <p>Articles for this category are in the pipeline. Check back soon or browse all articles.</p>
     <p>Articles for this section are in the pipeline. Check back soon or browse all articles.</p>
     <button type="button" class="btn-reset-filter" id="btn-reset-filter">View All Articles</button>
   </div>
@@ -182,23 +164,16 @@
 
 <script>
 (function() {
-  const pills = document.querySelectorAll('.category-filter-bar .cat-pill');
-  const cards = document.querySelectorAll('.posts-feed .post-entry');
   const sectionCards = document.querySelectorAll('.section-cards-grid .section-card');
   const postEntries = document.querySelectorAll('.posts-feed .post-entry');
   const emptyState = document.getElementById('category-empty-state');
   const emptyTitle = document.getElementById('empty-title');
   const resetBtn = document.getElementById('btn-reset-filter');
-  const validCategories = ['all', 'backend', 'cs', 'math', 'science', 'life'];
   const filterStatusBar = document.getElementById('feed-filter-status');
   const filterStatusBadge = document.getElementById('filter-status-badge');
   const filterStatusCount = document.getElementById('filter-status-count');
   const clearFilterBtn = document.getElementById('btn-clear-filter');
 
-  function filterCategory(targetCategory) {
-    targetCategory = (targetCategory || 'all').toLowerCase();
-    if (!validCategories.includes(targetCategory)) {
-      targetCategory = 'all';
   const validSections = ['all', 'backend', 'cs', 'math', 'science', 'life'];
 
   function filterSection(targetSection) {
@@ -207,12 +182,6 @@
       targetSection = 'all';
     }
 
-    // Update pill tabs active state
-    pills.forEach(pill => {
-      const cat = pill.getAttribute('data-category');
-      const isActive = cat === targetCategory;
-      pill.classList.toggle('active', isActive);
-      pill.setAttribute('aria-selected', isActive ? 'true' : 'false');
     let activeCardName = 'All Posts';
 
     // Update section cards active state
@@ -238,11 +207,6 @@
 
     // Filter post entry cards
     let matchCount = 0;
-    cards.forEach(card => {
-      const rawCats = card.getAttribute('data-categories') || '';
-      const cardCats = rawCats.split(/\s+/).filter(Boolean);
-      if (targetCategory === 'all' || cardCats.includes(targetCategory)) {
-        card.style.display = '';
     postEntries.forEach(entry => {
       const rawCats = entry.getAttribute('data-categories') || '';
       const entryCats = rawCats.split(/\s+/).filter(Boolean);
@@ -250,12 +214,10 @@
         entry.style.display = '';
         matchCount++;
       } else {
-        card.style.display = 'none';
         entry.style.display = 'none';
       }
     });
 
-    // Handle empty state
     // Update Active Filter Status Banner
     if (filterStatusBar && filterStatusBadge && filterStatusCount) {
       if (targetSection === 'all') {
@@ -273,7 +235,6 @@
       if (matchCount === 0) {
         emptyState.style.display = 'block';
         if (emptyTitle) {
-          emptyTitle.textContent = 'No articles in "' + targetCategory.toUpperCase() + '" yet';
           emptyTitle.textContent = `No articles in "${activeCardName}" yet`;
         }
       } else {
@@ -281,24 +242,16 @@
       }
     }
 
-    // Sync hash safely
-    if (targetCategory === 'all') {
     // Sync URL hash
     if (targetSection === 'all') {
       if (window.location.hash) {
         history.replaceState(null, '', window.location.pathname + window.location.search);
       }
     } else {
-      history.replaceState(null, '', '#' + targetCategory);
       history.replaceState(null, '', '#' + targetSection);
     }
   }
 
-  // Pill click listener
-  pills.forEach(pill => {
-    pill.addEventListener('click', () => {
-      const cat = pill.getAttribute('data-category');
-      filterCategory(cat);
   // Section card click and keyboard accessibility
   sectionCards.forEach(card => {
     function handleSelect() {
@@ -320,7 +273,6 @@
     });
   });
 
-  // Card badge click listener to filter directly
   // Post entry badge click listener to filter directly
   document.querySelectorAll('.cat-badge').forEach(badge => {
     badge.addEventListener('click', (e) => {
@@ -328,10 +280,6 @@
       e.stopPropagation();
       const cat = badge.getAttribute('data-category');
       if (cat) {
-        filterCategory(cat);
-        const nav = document.querySelector('.category-filter-wrapper');
-        if (nav) {
-          nav.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         filterSection(cat);
         const grid = document.querySelector('.section-cards-grid');
         if (grid) {
@@ -341,21 +289,17 @@
     });
   });
 
-  // Reset filter button
   // Clear / Reset filter buttons
   if (clearFilterBtn) {
     clearFilterBtn.addEventListener('click', () => filterSection('all'));
   }
   if (resetBtn) {
-    resetBtn.addEventListener('click', () => filterCategory('all'));
     resetBtn.addEventListener('click', () => filterSection('all'));
   }
 
   // Initial load from URL hash
   function checkHash() {
     const rawHash = window.location.hash.replace(/^#/, '').trim().toLowerCase();
-    if (rawHash && validCategories.includes(rawHash)) {
-      filterCategory(rawHash);
     if (rawHash && validSections.includes(rawHash)) {
       filterSection(rawHash);
     }
@@ -363,11 +307,9 @@
 
   window.addEventListener('hashchange', checkHash);
   document.addEventListener('DOMContentLoaded', checkHash);
-  // Also run immediately in case DOMContentLoaded already fired
   checkHash();
 })();
 </script>
 
 {{- end }}
 {{- end }}
-
