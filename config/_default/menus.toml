@@ -1,7 +1,7 @@
 [[main]]
   identifier = "posts"
   name = "Posts"
-  url = "/"
+  url = "/blog/posts/"
   weight = 10
 
 [[main]]
@@ -19,7 +19,7 @@
 [[main]]
   identifier = "profile"
   name = "Profile"
-  url = "/profile/"
+  url = "/"
   weight = 40
 
 [[main]]

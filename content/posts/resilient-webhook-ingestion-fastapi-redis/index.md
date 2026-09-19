@@ -2,6 +2,7 @@
 title = "Designing Resilient Webhook Ingestion with FastAPI, Celery, and Redis"
 date = '2026-09-12T21:00:00+05:30'
 slug = "resilient-webhook-ingestion-fastapi-redis"
+aliases = ["/resilient-webhook-ingestion-fastapi-redis/", "/posts/resilient-webhook-ingestion-fastapi-redis/"]
 draft = false
 author = "Siva Madhavan"
 description = "How to build an idempotent, zero-data-loss webhook processing pipeline capable of swallowing massive external bursts without degrading internal database performance."

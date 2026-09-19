@@ -2,6 +2,7 @@
 title = "How to Win in Life: A Simple Strategy"
 date = '2026-09-13T21:30:00+05:30'
 slug = "strategy-to-win-in-life"
+aliases = ["/strategy-to-win-in-life/", "/posts/strategy-to-win-in-life/"]
 draft = false
 author = "Siva Madhavan"
 description = "A simple, practical guide to winning in life: redefining success, compounding daily habits, taking smart risks, building systems, and protecting your peace of mind."

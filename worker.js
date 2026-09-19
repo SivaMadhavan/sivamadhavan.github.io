@@ -1,5 +1,5 @@
 // Cloudflare Worker for sivamadhavan.com
-// Serves interactive terminal resume at the root domain and redirects /posts/ to blog.sivamadhavan.com
+// Serves interactive terminal resume at root and routes blog requests to /blog/posts/
 
 const RESUME_HTML = `<!DOCTYPE html>
 <html lang="en">
@@ -246,7 +246,7 @@ section{margin-top:2.6rem;}
         </div>
         <div class="actions no-print">
           <button class="btn" onclick="window.print()">./export --pdf</button>
-          <a class="btn" href="https://blog.sivamadhavan.com/">cd ~/blog</a>
+          <a class="btn" href="/blog/posts/">cd ~/blog</a>
         </div>
       </header>
       <section class="reveal">
@@ -362,6 +362,12 @@ export default {
   async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
+    // If request comes from the deprecated blog.sivamadhavan.com subdomain, redirect to sivamadhavan.com
+    if (url.hostname === 'blog.sivamadhavan.com') {
+      const redirectPath = url.pathname === '/' ? '/blog/posts/' : (url.pathname.startsWith('/blog/posts') ? url.pathname : `/blog/posts${url.pathname}`);
+      return Response.redirect(`https://sivamadhavan.com${redirectPath}${url.search}`, 301);
+    }
+
     // If requesting root or profile, serve the interactive Terminal Profile HTML
     if (url.pathname === '/' || url.pathname === '/profile' || url.pathname === '/profile/') {
       return new Response(RESUME_HTML, {
@@ -372,8 +378,12 @@ export default {
       });
     }
 
-    // Redirect all other requests (e.g. /posts/*, /about, /tags) to blog.sivamadhavan.com
-    return Response.redirect(`https://blog.sivamadhavan.com${url.pathname}${url.search}`, 301);
+    // Redirect legacy /posts/ or /blog to /blog/posts/
+    if (url.pathname === '/posts' || url.pathname === '/posts/' || url.pathname === '/blog' || url.pathname === '/blog/') {
+      return Response.redirect(`https://sivamadhavan.com/blog/posts/`, 301);
+    }
+
+    return fetch(request);
   }
 };
 

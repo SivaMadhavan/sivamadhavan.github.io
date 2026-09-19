@@ -2,6 +2,7 @@
 title = "Five Years in Production: Engineering Trade-offs, Systems Thinking, and Longevity"
 date = '2026-09-12T20:00:00+05:30'
 slug = "five-years-in-production-engineering-lessons"
+aliases = ["/five-years-in-production-engineering-lessons/", "/posts/five-years-in-production-engineering-lessons/"]
 draft = false
 author = "Siva Madhavan"
 description = "Reflections from five years of building distributed healthcare platforms: why simple architectures beat clever abstractions, debugging at 2 AM, and pacing yourself for the marathon."

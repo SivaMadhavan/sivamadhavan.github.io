@@ -2,6 +2,7 @@
 title = "From Sound Waves to Spectrograms: The Physics & Signal Processing of Speech AI"
 date = '2026-09-12T20:30:00+05:30'
 slug = "physics-of-sound-to-spectrograms-speech-ai"
+aliases = ["/physics-of-sound-to-spectrograms-speech-ai/", "/posts/physics-of-sound-to-spectrograms-speech-ai/"]
 draft = false
 author = "Siva Madhavan"
 description = "Understanding how continuous acoustic pressure waves become discrete Mel-frequency spectrograms before feeding into Whisper and real-time speech models."

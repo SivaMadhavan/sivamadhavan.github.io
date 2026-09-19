@@ -2,6 +2,7 @@
 title = "The Essence of Vector Embeddings: High-Dimensional Cosine Similarity Explained"
 date = '2026-09-12T20:45:00+05:30'
 slug = "vector-embeddings-cosine-similarity-math"
+aliases = ["/vector-embeddings-cosine-similarity-math/", "/posts/vector-embeddings-cosine-similarity-math/"]
 draft = false
 author = "Siva Madhavan"
 description = "An intuitive mathematical exploration of high-dimensional vector spaces, dot products, and why cosine similarity powers modern semantic search and RAG."

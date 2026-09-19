@@ -1,4 +1,4 @@
-baseURL = 'https://blog.sivamadhavan.com/'
+baseURL = 'https://sivamadhavan.com/'
 languageCode = 'en-us'
 title = 'Siva Madhavan'
 theme = 'PaperMod'
@@ -17,5 +17,5 @@ enableEmoji = true
   home = ['HTML', 'RSS', 'JSON']
 
 [permalinks.page]
-  posts = '/:slug/'
+  posts = '/blog/posts/:slug/'
 

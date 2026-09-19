@@ -1,0 +1,311 @@
+{{- define "main" }}
+
+{{- $pages := .RegularPages.ByDate.Reverse }}
+{{- if not $pages }}
+  {{- $pages = (where site.RegularPages "Type" "posts").ByDate.Reverse }}
+{{- end }}
+
+{{- $latestPost := index $pages 0 }}
+{{- $lastUpdated := "" }}
+{{- if $latestPost }}
+  {{- $lastUpdated = $latestPost.Lastmod | default $latestPost.Date }}
+{{- end }}
+
+{{- $targetCats := slice 
+  (dict "key" "all" "name" "All Posts" "icon" "📚" "desc" "Complete archive of technical deep-dives, systems, and essays." "badgeClass" "all")
+  (dict "key" "backend" "name" "Backend" "icon" "⚙️" "desc" "Distributed systems, resilient webhooks, FastAPI & Redis architecture." "badgeClass" "backend")
+  (dict "key" "cs" "name" "Computer Science" "icon" "💻" "desc" "Large language models, transformer mechanics & self-attention." "badgeClass" "cs")
+  (dict "key" "math" "name" "Mathematics" "icon" "📐" "desc" "Vector embeddings, cosine similarity & high-dimensional spaces." "badgeClass" "math")
+  (dict "key" "science" "name" "Applied Science" "icon" "🔬" "desc" "Acoustic wave physics, Fourier analysis & speech AI spectrograms." "badgeClass" "science")
+  (dict "key" "life" "name" "Life & Mindset" "icon" "🌿" "desc" "Production engineering reflections, compounding habits & life strategy." "badgeClass" "life")
+}}
+
+<!-- Posts Meta Header with Last Updated Timestamp -->
+<div class="home-meta-bar">
+  <div class="sections-intro">
+    <h2 class="sections-title">Sections</h2>
+    <span class="sections-hint">Click a card to filter posts by section</span>
+  </div>
+
+  {{- if $latestPost }}
+  <div class="last-updated-chip" title="Most recently published or modified article ({{ $latestPost.Title }})">
+    <span class="pulse-indicator" aria-hidden="true"></span>
+    <span class="updated-text">Last updated: <time datetime="{{ $lastUpdated.Format "2006-01-02T15:04:05Z07:00" }}">{{ $lastUpdated.Format "Jan 02, 2006" }}</time></span>
+  </div>
+  {{- end }}
+</div>
+
+<!-- Interactive Section Cards Grid -->
+<div class="section-cards-grid" role="tablist" aria-label="Explore blog sections">
+  {{- range $cat := $targetCats }}
+    {{- $catPages := slice }}
+    {{- if eq $cat.key "all" }}
+      {{- $catPages = $pages }}
+    {{- else }}
+      {{- range $pages }}
+        {{- $postCats := slice }}
+        {{- with .Params.categories }}
+          {{- range . }}
+            {{- $postCats = $postCats | append (. | lower) }}
+          {{- end }}
+        {{- end }}
+        {{- if in $postCats $cat.key }}
+          {{- $catPages = $catPages | append . }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+    {{- $count := len $catPages }}
+
+    <div class="section-card section-card-{{ $cat.badgeClass }}{{ if eq $cat.key "all" }} active{{ end }}"
+         data-section="{{ $cat.key }}"
+         data-name="{{ $cat.name }}"
+         data-count="{{ $count }}"
+         role="tab"
+         tabindex="0"
+         aria-selected="{{ if eq $cat.key "all" }}true{{ else }}false{{ end }}"
+         aria-label="{{ $cat.name }} section with {{ $count }} articles">
+      <div class="section-card-header">
+        <div class="section-card-icon-wrap section-icon-{{ $cat.badgeClass }}">
+          <span class="section-card-icon">{{ $cat.icon }}</span>
+        </div>
+        <div class="section-card-meta">
+          <span class="section-card-count">{{ $count }} {{ if eq $count 1 }}article{{ else }}articles{{ end }}</span>
+        </div>
+      </div>
+      <h3 class="section-card-title">{{ $cat.name }}</h3>
+      <p class="section-card-desc">{{ $cat.desc }}</p>
+      <div class="section-card-footer">
+        <span class="section-card-status">
+          <span class="status-indicator"></span>
+          <span class="status-label">{{ if eq $cat.key "all" }}Viewing all{{ else }}Filter posts{{ end }}</span>
+        </span>
+        <span class="section-card-arrow">&rarr;</span>
+      </div>
+    </div>
+  {{- end }}
+</div>
+
+<!-- Active Filter Status Indicator -->
+<div class="feed-filter-status" id="feed-filter-status" style="display: none;">
+  <div class="filter-status-info">
+    <span class="filter-status-label">Section:</span>
+    <span class="filter-status-badge" id="filter-status-badge">All</span>
+    <span class="filter-status-count" id="filter-status-count">({{ len $pages }} articles)</span>
+  </div>
+  <button type="button" class="btn-clear-filter" id="btn-clear-filter" aria-label="Reset filter to show all posts">
+    <span>View All Posts</span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+  </button>
+</div>
+
+<!-- Posts Feed with Category Filtering -->
+<div class="posts-feed" id="posts-feed">
+  {{- range $index, $page := $pages }}
+  {{- $catList := slice }}
+  {{- with .Params.categories }}
+    {{- range . }}
+      {{- $catList = $catList | append (. | lower) }}
+    {{- end }}
+  {{- end }}
+  {{- $catAttr := delimit $catList " " }}
+
+  <article class="post-entry" data-categories="{{ $catAttr }}">
+    {{- with .Params.categories }}
+    <div class="entry-categories">
+      {{- range . }}
+      <span class="cat-badge cat-badge-{{ . | lower }}" data-category="{{ . | lower }}">{{ . }}</span>
+      {{- end }}
+    </div>
+    {{- end }}
+    
+    {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
+    {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
+
+    <header class="entry-header">
+      <h2 class="entry-hint-parent">
+        {{- .Title }}
+        {{- if .Draft }}
+        <span class="entry-hint" title="Draft">
+          <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
+            <path d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+          </svg>
+        </span>
+        {{- end }}
+      </h2>
+    </header>
+
+    {{- if (ne (.Param "hideSummary") true) }}
+    <div class="entry-content">
+      <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
+    </div>
+    {{- end }}
+
+    {{- if not (.Param "hideMeta") }}
+    <footer class="entry-footer">
+      {{- partial "post_meta.html" . -}}
+    </footer>
+    {{- end }}
+    <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+  </article>
+  {{- end }}
+
+  <!-- Dynamic Empty State -->
+  <div class="category-empty-state" id="category-empty-state" style="display: none;">
+    <div class="empty-icon">📂</div>
+    <h3 id="empty-title">No articles found</h3>
+    <p>Articles for this section are in the pipeline. Check back soon or browse all articles.</p>
+    <button type="button" class="btn-reset-filter" id="btn-reset-filter">View All Articles</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  const sectionCards = document.querySelectorAll('.section-cards-grid .section-card');
+  const postEntries = document.querySelectorAll('.posts-feed .post-entry');
+  const emptyState = document.getElementById('category-empty-state');
+  const emptyTitle = document.getElementById('empty-title');
+  const resetBtn = document.getElementById('btn-reset-filter');
+  const filterStatusBar = document.getElementById('feed-filter-status');
+  const filterStatusBadge = document.getElementById('filter-status-badge');
+  const filterStatusCount = document.getElementById('filter-status-count');
+  const clearFilterBtn = document.getElementById('btn-clear-filter');
+
+  const validSections = ['all', 'backend', 'cs', 'math', 'science', 'life'];
+
+  function filterSection(targetSection) {
+    targetSection = (targetSection || 'all').toLowerCase();
+    if (!validSections.includes(targetSection)) {
+      targetSection = 'all';
+    }
+
+    let activeCardName = 'All Posts';
+
+    // Update section cards active state
+    sectionCards.forEach(card => {
+      const sec = card.getAttribute('data-section');
+      const isActive = sec === targetSection;
+      card.classList.toggle('active', isActive);
+      card.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      
+      const statusLabel = card.querySelector('.status-label');
+      if (statusLabel) {
+        if (isActive) {
+          statusLabel.textContent = (sec === 'all') ? 'Viewing all' : 'Active section';
+        } else {
+          statusLabel.textContent = 'Filter posts';
+        }
+      }
+
+      if (isActive) {
+        activeCardName = card.getAttribute('data-name') || sec;
+      }
+    });
+
+    // Filter post entry cards
+    let matchCount = 0;
+    postEntries.forEach(entry => {
+      const rawCats = entry.getAttribute('data-categories') || '';
+      const entryCats = rawCats.split(/\s+/).filter(Boolean);
+      if (targetSection === 'all' || entryCats.includes(targetSection)) {
+        entry.style.display = '';
+        matchCount++;
+      } else {
+        entry.style.display = 'none';
+      }
+    });
+
+    // Update Active Filter Status Banner
+    if (filterStatusBar && filterStatusBadge && filterStatusCount) {
+      if (targetSection === 'all') {
+        filterStatusBar.style.display = 'none';
+      } else {
+        filterStatusBar.style.display = 'flex';
+        filterStatusBadge.textContent = activeCardName;
+        filterStatusBadge.className = 'filter-status-badge cat-badge-' + targetSection;
+        filterStatusCount.textContent = `(${matchCount} ${matchCount === 1 ? 'article' : 'articles'})`;
+      }
+    }
+
+    // Handle Empty State
+    if (emptyState) {
+      if (matchCount === 0) {
+        emptyState.style.display = 'block';
+        if (emptyTitle) {
+          emptyTitle.textContent = `No articles in "${activeCardName}" yet`;
+        }
+      } else {
+        emptyState.style.display = 'none';
+      }
+    }
+
+    // Sync URL hash
+    if (targetSection === 'all') {
+      if (window.location.hash) {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+    } else {
+      history.replaceState(null, '', '#' + targetSection);
+    }
+  }
+
+  // Section card click and keyboard accessibility
+  sectionCards.forEach(card => {
+    function handleSelect() {
+      const sec = card.getAttribute('data-section');
+      // If already active and not "all", clicking it toggles back to "all"
+      if (card.classList.contains('active') && sec !== 'all') {
+        filterSection('all');
+      } else {
+        filterSection(sec);
+      }
+    }
+
+    card.addEventListener('click', handleSelect);
+    card.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleSelect();
+      }
+    });
+  });
+
+  // Post entry badge click listener to filter directly
+  document.querySelectorAll('.cat-badge').forEach(badge => {
+    badge.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const cat = badge.getAttribute('data-category');
+      if (cat) {
+        filterSection(cat);
+        const grid = document.querySelector('.section-cards-grid');
+        if (grid) {
+          grid.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+      }
+    });
+  });
+
+  // Clear / Reset filter buttons
+  if (clearFilterBtn) {
+    clearFilterBtn.addEventListener('click', () => filterSection('all'));
+  }
+  if (resetBtn) {
+    resetBtn.addEventListener('click', () => filterSection('all'));
+  }
+
+  // Initial load from URL hash
+  function checkHash() {
+    const rawHash = window.location.hash.replace(/^#/, '').trim().toLowerCase();
+    if (rawHash && validSections.includes(rawHash)) {
+      filterSection(rawHash);
+    }
+  }
+
+  window.addEventListener('hashchange', checkHash);
+  document.addEventListener('DOMContentLoaded', checkHash);
+  checkHash();
+})();
+</script>
+
+{{- end }}
+
